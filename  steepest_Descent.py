@@ -146,6 +146,8 @@ def standard_form(linear_terms, quadratic_terms, constant):
     Q = [[x11, x12],
          [x12,x22]]
     
+    #c = [x1_linear[0].get_coefficient(), x2_linear[0].get_coefficient()]
+    
     #print the Hessian (Q)
     print('==============Hessian=============')
     print("Q =\t",end='')
@@ -156,13 +158,53 @@ def standard_form(linear_terms, quadratic_terms, constant):
         print()
     print('===============================')
 
+    print('========c=========')
+    print('c =')
+    print(x1_linear[0].get_coefficient(), x2_linear[0].get_coefficient())
+    c = [x1_linear[0].get_coefficient(), x2_linear[0].get_coefficient()]
+    print('==================')
+    print('========k=========')
+    print(k)
+    print('==================')
+
+
     detQ = (x11*x22) - (x12*x12)
 
     print('det(Q) = ', detQ)
     if detQ > 0:
         print("Function is convex")
 
+    steepest_descent(Q, c)
+
+
+def steepest_descent(Q, c):
+    #gradient = qx+c
+    x01 = int(input("enter the x1 of the point x0: "))
+    x02 = int(input("enter the x2 of the point x0: "))
+    x0 = [x01, x02]
+    #gradient = []
+
+    #gradient = [[(Q[0][0]* x0[0] + Q[0][1] * x0[1]) + c[0]], [(Q[1][0]* x0[0] + Q[1][1] * x0[1]) + c[1]]]
+    gradient = [Q[0][0]* x0[0] + Q[0][1] * x0[1] + c[0], Q[1][0]* x0[0] + Q[1][1] * x0[1] + c[1]]
     
+    for i in gradient:
+        print(i)
+    
+    #x1 = x0 - alpha * gradient
+    #alpha = gradient^2/gradient * [Q * gradient]
+
+    gradientXQ = [Q[0][0] * gradient[0] + Q[0][1] * gradient[1] , Q[1][0] * gradient[0] + Q[1][1] * gradient[1] ]
+    alpha = (gradient[0] * gradient[1] + gradient[1] * gradient[1])/(gradient[0]* gradientXQ[0] + gradient[1] * gradientXQ[1])
+    print('gxq =')
+
+    for i in gradientXQ:
+        print(i)
+    #x11 = x0[0]
+
+    print('alpha = ', alpha)
+    x10 = x01 - alpha * gradient[0]
+    x11 = x02 - alpha * gradient[1]
+    print("x1 = ",x10, ", ", x11)
 
 
 main()
